@@ -1,11 +1,8 @@
 package com.masq.redis;
 
 import com.masq.utils.JedisUtil;
-import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashMap;
 import java.util.Map;
