@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class BaseTest {
+public class RedisBaseTest {
 
     @Test
     public void testKeysAndDBSize() {
@@ -112,5 +112,8 @@ public class BaseTest {
         System.out.println("RENAME后" + newKey + " --> " + jedis.get(newKey));
 
     }
+
+
+
 
 }
