@@ -5,7 +5,7 @@
    > 2. 如果确定总键数比较少，遍历不需要花费太多时间，可以执行。
    > 3. 使用scan命令渐进式遍历的方式来解决keys可能带来的阻塞。
 
-## Redis
+## Redis基础
 1. Redis提供5种数据结构， 每种数据结构都有多种内部编码实现。
 2. 纯内存存储、 IO多路复用技术、 单线程架构是造就Redis高性能的三个因素。
 3. 由于Redis的单线程架构， 所以需要每个命令能被快速执行完， 否则会存在阻塞Redis的可能， 理解Redis单线程命令处理机制是开发和运维Redis的核心之一。
@@ -14,3 +14,18 @@
 6. persist命令可以删除任意类型键的过期时间， 但是set命令也会删除字符串类型键的过期时间， 这在开发时容易被忽视。
 7. move、 dump+restore、 migrate是Redis发展过程中三种迁移键的方式， 其中move命令基本废弃， migrate命令用原子性的方式实现了dump+restore， 并且支持批量操作， 是Redis Cluster实现水平扩容的重要工具。
 8. scan命令可以解决keys命令可能带来的阻塞问题， 同时Redis还提供170了hscan、 sscan、 zscan渐进式地遍历hash、 set、 zset。
+
+## Redis进阶
+1. 慢查询中的两个重要参数slowlog-log-slower-than和slowlog-maxlen。
+2. 慢查询不包含命令网络传输和排队时间。
+3. 有必要将慢查询定期存放。
+4. redis-cli一些重要的选项， 例如--latency、 –-bigkeys、 -i和-r组合。
+5. redis-benchmark的使用方法和重要参数。
+6. Pipeline可以有效减少RTT次数， 但每次Pipeline的命令数量不能无节制。
+7. Redis可以使用Lua脚本创造出原子、 高效、 自定义命令组合。
+8. Redis执行Lua脚本有两种方法： eval和evalsha。
+9. Bitmaps可以用来做独立用户统计， 有效节省内存。
+10. Bitmaps中setbit一个大的偏移量， 由于申请大量内存会导致阻塞。
+11. HyperLogLog虽然在统计独立总量时存在一定的误差， 但是节省的内存量十分惊人。
+12. Redis的发布订阅机制相比许多专业的消息队列系统功能较弱， 不具备堆积和回溯消息的能力， 但胜在足够简单。
+13. Redis3.2提供了GEO功能， 用来实现基于地理位置信息的应用， 但底层实现是zset。
