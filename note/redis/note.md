@@ -11,8 +11,63 @@
   | ----|-------------------------------------------------------------------------| ---- | 
   | 直连 | 简单方便，适用于少量长期连接的场景 | 1) 每次连接需要新建/关闭TCP连接   <br/>2) 资源无法控制，极端情况会出现连接泄露   <br/>3) Jedis对象线程不安全 |
   | 连接池 |1) 无需每次新建或者关闭连接，节约资源。 <br/>2) 使用连接池的形式保护和控制资源的使用 | 相对于直连使用相对麻烦，对于资源管理需要很多参数来保证，规划不合理的情况下容易出现问题 | 
+ 
+3. Jedis无法从连接池获取到连接。
+   ```
+   redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+   ```
+    - 并发比较高的情况下连接池中jedis个数设置过小。
+    - 没有正确使用连接池，比如使用完成之后没有释放连接。 
+    - 存在慢查询操作，这些慢查询占用jedis无法归还
+    - redis服务器因为一些原因造成阻塞，导致客户端的命令无法即使执行。
+   
+4. 客户端读写超时。
+   ```
+   redis.colents.jedis.exceptions.JedisConnectionException: Java.net.SocketTimeoutException: Read timed out.   
+   ```
+    - 读写超时时间设置过短。
+    - 命令本身比较慢。
+    - 客户端与服务器网络不正常。
+    - Redis自身阻塞.
 
+5. 客户端连接超时。
+   ```
+   redis.clients.jedis.exceptions.JedisConnectionExceptioni: java.net.SocketTimeoutException: connect timed out. 
+   ```
+    - 连接超时时间设置过短。
+    - Redis发生阻塞，造成tcp-backlog已满，导致新的连接失败。
+    - 客户端与服务器网络异常。
 
+6. 客户端缓冲区异常
+   ```
+   redis.client.jedis.exceptions.JedisConnectionException: Unexpected end of stream
+   ```
+    - 输出缓冲区满
+    - 长时间闲置连接被服务器断开
+    - 不正常并发读写：Jedis对象同时被多个线程并发操作。
+
+7. Lua脚本正在执行
+   ```
+   redis.clients.jedis.exceptions.JedisDataException: BUSY Redis  is busy running a script. You can only call SCRIPT KILL or SHUTDOWN NOSAVE.
+   ```
+   Redis执行lua脚本，并且超过了lua-time-limit，此时jedis调用Redis时会报错Lua脚本正在执行。
+
+8. Redis正在加载持久化文件。
+   ```
+   redis.clients.jedis.exception.JedisDataException: LOADING Redis is loading the dataset in memory.
+   ```
+   Jedis调用Redis时， Redis正在从磁盘中加载持久化文件。 
+
+9. Redis使用内存超过maxmemory配置
+    ```
+    redis.client.jedis.exceptions.JedisDataException: OOM command not allowd when used memory > "maxmemory".    
+    ```
+   Redis的使用内存大于配置的最大内存。 
+
+10. 客户端连接数过大 
+    ```
+    redis.clients.jedis.exception.JedisDataException: ERR max number of client reached.
+    ```
 
 ## Redis基础
 1. Redis提供5种数据结构， 每种数据结构都有多种内部编码实现。
@@ -113,3 +168,15 @@
 2. 输入缓冲区不受maxmemory限制，如果Redis设置了maxmeory为4G，已存储2G的情况下，如果输入缓冲区使用了3G，会产生数据丢失、键值淘汰、OOM等情况。
 
 
+## Redis客户端 
+1. RESP（Redis Serialization Protocol Redis） 保证客户端与服务端的正常通信， 是各种编程语言开发客户端的基础。
+2. 要选择社区活跃客户端， 在实际项目中使用稳定版本的客户端。
+3. 区分Jedis直连和连接池的区别， 在生产环境中， 应该使用连接池。
+4. Jedis.close（） 在直连下是关闭连接， 在连接池则是归还连接。
+5. Jedis客户端没有内置序列化， 需要自己选用。
+6. 客户端输入缓冲区不能配置， 强制限制在1G之内， 但是不会受到maxmemory限制。
+7. 客户端输出缓冲区支持普通客户端、 发布订阅客户端、 复制客户端配置， 同样会受到maxmemory限制。
+8. Redis的timeout配置可以自动关闭闲置客户端， tcp-keepalive参数可以周期性检查关闭无效TCP连接
+9. monitor命令虽然好用， 但是在大并发下存在输出缓冲区暴涨的可能性。
+10. info clients帮助开发和运维人员找到客户端可能存在的问题。
+11. 理解Redis通信原理和建立完善的监控系统对快速定位解决客户端常见问题非常有帮助
