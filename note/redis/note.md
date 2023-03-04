@@ -118,7 +118,7 @@
   - 字符串回复：第一个字符"$"
   - 多条字符串回复：第一个字符"*"
 
-![Redis五种回复类型在RESP下的编码.png](images/Redis五种回复类型在RESP下的编码.png)  
+![Redis五种回复类型在RESP下的编码.png](../../redis-demo/note/images/Redis五种回复类型在RESP下的编码.png)  
 
 
 ### Jedis连接池的常用属性
