@@ -4,6 +4,7 @@ import com.masq.utils.JedisUtil;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class RedisSetTest {
@@ -65,5 +66,35 @@ public class RedisSetTest {
         // 查看ID为1的用户的所有标签
         user1Tags = jedis.smembers(key1);
         System.out.println("ID为1的用户的标签：" + user1Tags);
+    }
+
+
+    @Test
+    public void testPop() {
+        Jedis jedis = JedisUtil.getJedis();
+        if (jedis == null) {
+            return;
+        }
+        String redKey = "ssq:red";
+        jedis.del(redKey);
+
+        String blueKey = "ssq:blue";
+        jedis.del(blueKey);
+
+        String[] redNums = new String[33];
+        for (int i = 0; i < 33; i++) {
+            redNums[i] = i + 1 + "";
+        }
+        jedis.sadd(redKey, redNums);
+
+        String[] blueNums = new String[16];
+        for (int i = 0; i < 16; i++) {
+            blueNums[i] = i + 1 + "";
+        }
+        jedis.sadd(blueKey, blueNums);
+
+        Set<String> red = jedis.spop(redKey, 6);
+        Set<String> blue = jedis.spop(blueKey, 1);
+        System.out.println(red + "-" + blue);
     }
 }
