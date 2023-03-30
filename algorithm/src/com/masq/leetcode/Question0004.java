@@ -1,6 +1,4 @@
-package com.masq;
-
-import java.util.*;
+package com.masq.leetcode;
 
 /**
  * 4. 寻找两个正序数组的中位数  <br/>

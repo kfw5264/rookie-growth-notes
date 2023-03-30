@@ -1,6 +1,4 @@
-package com.masq;
-
-import org.w3c.dom.ls.LSOutput;
+package com.masq.leetcode;
 
 import java.util.*;
 

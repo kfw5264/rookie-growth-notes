@@ -1,4 +1,4 @@
-package com.masq;
+package com.masq.leetcode;
 
 /**
  * 2. 两数相加 <br/>
