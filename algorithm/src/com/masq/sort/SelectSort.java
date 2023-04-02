@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /**
  * 选择排序<br/>
- *
+ * @author masq
  */
 public class SelectSort {
 
