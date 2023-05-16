@@ -23,7 +23,7 @@ public class Chapter01 {
 //        basicClassInfo(Class.forName("java.lang.Override"));
 //        basicClassInfo(short.class);
 //        basicClassInfo(ArrayList.class);
-        Class sonClz = Son.class;
+//        Class sonClz = Son.class;
 //        getDeclaredFields(sonClz);
 //        getFields(sonClz);
 //        getDeclaredMethods(sonClz);

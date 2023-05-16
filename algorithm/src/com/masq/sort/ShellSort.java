@@ -3,7 +3,8 @@ package com.masq.sort;
 import java.util.Arrays;
 
 /**
- * 希尔排序
+ * 希尔排序<br/>
+ * 希尔排序本质还是插入排序<br/>
  * @author masq
  */
 public class ShellSort {

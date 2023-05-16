@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.masq.mybatisdemo.dao.OrderDao">
+
+    <resultMap id="BaseResultMap" type="com.masq.mybatisdemo.pojo.Order">
+        <!--@Table b_order-->
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="orderNo" column="order_no" jdbcType="INTEGER"/>
+        <result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+        <result property="insertBy" column="insert_by" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="insertTime" column="insert_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into b_order(order_id, order_no, order_status, insert_by, update_by, insert_time, update_time)
+        values (#{orderId}, #{orderNo}, #{orderStatus}, #{insertBy}, #{updateBy}, #{insertTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update b_order
+        <set>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                order_status = #{orderStatus},
+            </if>
+            <if test="insertBy != null">
+                insert_by = #{insertBy},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="insertTime != null">
+                insert_time = #{insertTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+
+    <insert id="insertBatch">
+        insert into b_order(order_id,order_no, order_status, insert_by, update_by, insert_time, update_time) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId},#{item.orderNo}, #{item.orderStatus}, #{item.insertBy}, #{item.updateBy},
+            #{item.insertTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <update id="updateBatch">
+        update b_order t
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="order_no  = case" suffix="end ,">
+                <foreach collection="list" item="item">
+                    <if test="item.orderNo != null ">
+                        when t.order_id = #{item.orderId} then #{item.orderNo}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time  = case" suffix="end ,">
+                <foreach collection="list" item="item">
+                    <if test="item.updateTime != null ">
+                        when t.order_id = #{item.orderId} then #{item.updateTime}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where order_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.orderId}
+        </foreach>
+    </update>
+
+</mapper>

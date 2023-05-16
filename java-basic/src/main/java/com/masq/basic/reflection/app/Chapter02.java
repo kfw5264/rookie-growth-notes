@@ -24,10 +24,10 @@ public class Chapter02 {
     public static void main(String[] args) {
 //
 //        dynamicProxy();
-//        dynamicProxyDemo();
-        cglibProxyInvokeSuper();
-        System.out.println("=====up is invokeSuper and down is invoke=============");
-        cglibProxyInvoke();
+        dynamicProxyDemo();
+//        cglibProxyInvokeSuper();
+//        System.out.println("=====up is invokeSuper and down is invoke=============");
+//        cglibProxyInvoke();
     }
 
     private static void cglibProxyInvoke() {
@@ -78,7 +78,7 @@ public class Chapter02 {
                 }
                 if (methodName3.equals(method.getName())) {
                     System.out.println("This is a TestMethodReturnWithOneParameter");
-                    return "Hello " + args[0] + "level" + args[1];
+                    return "Hello " + args[0] + " level" + args[1];
                 }
 
                 return null;

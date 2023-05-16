@@ -3,6 +3,8 @@ package com.masq.basic.exception;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * @title App
@@ -85,7 +87,7 @@ public class App {
         InputStream is = null;
 
         try {
-            is = new FileInputStream("/home/masq/test.txt");
+            is = Files.newInputStream(Paths.get("/home/masq/test.txt"));
             int data = 0;
             while ((data = is.read()) != -1) {
                 System.out.print((char) data);
@@ -104,7 +106,7 @@ public class App {
     }
 
     public static void tryWithResource () {
-        try (InputStream is = new FileInputStream("/home/masq/test.txt")) {
+        try (InputStream is = Files.newInputStream(Paths.get("/home/masq/test.txt"))) {
             int data = 0;
             while ((data = is.read()) != -1) {
                 System.out.print((char) data);
