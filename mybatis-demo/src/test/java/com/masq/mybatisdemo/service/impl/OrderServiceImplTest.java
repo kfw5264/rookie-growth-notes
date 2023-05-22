@@ -36,4 +36,20 @@ public class OrderServiceImplTest {
         list.add(new Order(5L, "NO.5", 1));
         orderService.insertBatch(list);
     }
+
+    @Test
+    public void testUpdateBatch() {
+        List<Order> list = new ArrayList<>();
+        list.add(new Order(1L, "NO.0001", 1));
+        list.add(new Order(2L, "NO.0002", 2));
+        list.add(new Order(3L, "NO.0003", 1));
+        list.add(new Order(4L, "NO.0004", 2));
+        list.add(new Order(5L, "NO.0005", 1));
+
+        list.forEach(item -> {
+            System.out.println("CreateBy->" + item.getInsertBy() + ", UpdateBy->" + item.getUpdateBy() + ", createTime->" + item.getInsertTime() + ", updateTime-> " + item.getUpdateTime());
+        });
+
+        orderService.updateBatch(list);
+    }
 }
