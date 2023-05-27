@@ -109,12 +109,12 @@ public class AutoOffsetResetConfigTest {
         // earliest 自动设置为最开始的偏移量
         // latest   自动设置为结束的偏移量
         // none     抛出异常
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        // 下面两个配置表示消费者会在10s后自动提交当前偏移量，如果10s内结束程序，那么偏移量没有提交，下次消费还是会从开始的位置重新消费
-        // 消费者自动提交偏移量的时间间隔
-        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "10000");
-        // 设置允许自动提交
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+//        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+//        // 下面两个配置表示消费者会在10s后自动提交当前偏移量，如果10s内结束程序，那么偏移量没有提交，下次消费还是会从开始的位置重新消费
+//        // 消费者自动提交偏移量的时间间隔
+//        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "10000");
+//        // 设置允许自动提交
+//        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
 
         // 建立连接
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);

@@ -27,7 +27,7 @@ public class TopicTest {
 
     // 查看Topic列表
     @Test
-    public void findTopics() {
+    public void listTopic() {
         ListTopicsResult result = client.listTopics();
         try {
             Set<String> names = result.names().get();
@@ -52,7 +52,7 @@ public class TopicTest {
     // 创建Topic
     @Test
     public void testCreateTopic() {
-        NewTopic topic = new NewTopic("topic03", 3, (short) 3);
+        NewTopic topic = new NewTopic("topic03", 3, (short) 3 );
         // 异步创建
         CreateTopicsResult result = client.createTopics(Collections.singletonList(topic));
 

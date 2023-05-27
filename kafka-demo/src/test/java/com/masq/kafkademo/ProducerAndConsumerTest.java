@@ -40,7 +40,6 @@ public class ProducerAndConsumerTest {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "centos0:9092,centos1:9092,centos2:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        // 配置拦截器
         props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, MyInterceptor.class.getName());
         KafkaProducer<String, Serializable> producer = new KafkaProducer<>(props);
 
